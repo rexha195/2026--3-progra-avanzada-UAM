@@ -16,10 +16,12 @@ public sealed class MastermindService
     private readonly HashSet<string> _cheatCodesUsados = new(StringComparer.OrdinalIgnoreCase);
     private readonly string _rutaCheatCodes;
     private readonly object _bloqueoSesion = new();
+    private readonly Func<int, int> _seleccionarPosicion;
 
     public MastermindService(
         IEnumerable<char>? coloresValidos = null,
-        string? rutaCheatCodes = null)
+        string? rutaCheatCodes = null,
+        Func<int, int>? seleccionarPosicion = null)
     {
         _coloresValidos = new HashSet<char>(coloresValidos ?? ColoresPredeterminados);
         if (_coloresValidos.Count == 0)
@@ -28,6 +30,7 @@ public sealed class MastermindService
         }
 
         _rutaCheatCodes = rutaCheatCodes ?? Path.Combine(AppContext.BaseDirectory, "cheatcodes.json");
+        _seleccionarPosicion = seleccionarPosicion ?? Random.Shared.Next;
     }
 
     public (int bienPosicionados, int colorCorrecto) EvaluarIntento(
@@ -152,7 +155,12 @@ public sealed class MastermindService
             _cheatCodesUsados.Add(codigoHash);
         }
 
-        var posicion = Random.Shared.Next(patronSecreto.Length);
+        var posicion = _seleccionarPosicion(patronSecreto.Length);
+        if (posicion < 0 || posicion >= patronSecreto.Length)
+        {
+            throw new InvalidOperationException("El selector aleatorio devolvió una posición no válida.");
+        }
+
         if (patronSecreto[posicion] == intentoJugador[posicion])
         {
             Console.WriteLine("sin suerte");
