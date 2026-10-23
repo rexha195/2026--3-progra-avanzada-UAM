@@ -1,0 +1,44 @@
+@model Quiniela.Mvc.Models.QuinielaPredictionViewModel
+@{
+    ViewData["Title"] = "Web unit testing";
+}
+
+<h1>Quiniela score calculator</h1>
+<p>Enter the actual match score and your prediction.</p>
+
+<form asp-action="CalculatePoints" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="ActualTeamAScore" class="form-label"></label>
+        <input asp-for="ActualTeamAScore" class="form-control" min="0" />
+        <span asp-validation-for="ActualTeamAScore" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ActualTeamBScore" class="form-label"></label>
+        <input asp-for="ActualTeamBScore" class="form-control" min="0" />
+        <span asp-validation-for="ActualTeamBScore" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PredictedTeamAScore" class="form-label"></label>
+        <input asp-for="PredictedTeamAScore" class="form-control" min="0" />
+        <span asp-validation-for="PredictedTeamAScore" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PredictedTeamBScore" class="form-label"></label>
+        <input asp-for="PredictedTeamBScore" class="form-control" min="0" />
+        <span asp-validation-for="PredictedTeamBScore" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Calculate points</button>
+</form>
+
+@if (Model.TotalPoints.HasValue)
+{
+    <div class="alert alert-success mt-4" role="status">
+        Given the previous arguments, the total of points is @Model.TotalPoints.
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

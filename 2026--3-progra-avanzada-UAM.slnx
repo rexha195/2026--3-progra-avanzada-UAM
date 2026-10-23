@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MastermindEvaluator.Tests/MastermindEvaluator.Tests.csproj" />
+  <Project Path="MastermindEvaluator/MastermindEvaluator.csproj" />
+</Solution>
