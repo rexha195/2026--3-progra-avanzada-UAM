@@ -34,3 +34,26 @@ Run the MVC app with:
 ```powershell
 dotnet run --project .\Quiniela.Mvc
 ```
+
+## Mastermind evaluator
+
+`MastermindService` evaluates 4- or 6-color attempts using `Y`, `C`, `B`,
+`P`, `W`, `K`, `R`, and `G` by default. A game should use its own service
+instance; each instance tracks which cheat-code hashes have already been used
+in that game.
+
+Cheat codes are stored in `MastermindEvaluator/cheatcodes.json` as an array
+containing a lowercase or uppercase SHA-256 hash and an available-use count:
+
+```json
+[
+  {
+    "hash": "<SHA-256 hash of the UTF-8 cheat code>",
+    "usosDisponibles": 1
+  }
+]
+```
+
+The hash is calculated with SHA-256 over the cheat code's UTF-8 bytes. The
+project copies this file beside the application at build time. Successful use
+decrements `usosDisponibles` and persists the updated JSON.
